@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Emailer</title>
+  <script>
+    !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.13.1";
+    analytics.load("UcbBBdzk6RdkhGqz014S1XZ86NE4pCr6");
+    analytics.page();
+    }}();
+  </script>
+  <link href="bulma/css/bulma.min.css" rel="stylesheet">
+</head>
+<body>
+  <section class="hero is-info is-fullheight">
+    <div class="hero-head">
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+              Segment / SendGrid Demo
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class='hero-body'>
+      <div class='container has-text-centered'>
+        <h1 class='title is-1' id='my-number'>###</h1>
+        <div class='columns is-centered'>
+          <div class='column is-half'>
+            <div class='field has-addons'>
+              <div class='control is-expanded'>
+                <input class='input' id='email' type='text' placeholder='Email me my number'>
+              </div>
+              <div class='control'>
+                <button class='button is-primary' id='create-number-btn'>Create Number</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function(analytics){
+      var numberHtml = document.getElementById('my-number');
+      var genNumberBtn = document.getElementById('create-number-btn');
+      var emailInput = document.getElementById('email');
+
+      function sendEmail(to_email, number) {
+        fetch('https://1sc3p8ztsa.execute-api.us-east-2.amazonaws.com/Prod/send-number-email/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({to_email, number})
+        })
+        .then(response => {
+          console.log('response', response.json())
+        })
+        .catch(err => {
+          console.log('error ', err)
+        })
+      }
+
+      genNumberBtn.addEventListener('click', () => {
+        var num = Math.floor(Math.random() * 100) + 1;
+        numberHtml.innerHTML = num;
+        analytics.track('Number Created', {
+          number: num
+        })
+        sendEmail(emailInput.value, num)
+      })
+    })(analytics)
+  </script>
+</body>
+</html>
