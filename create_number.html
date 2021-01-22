@@ -30,10 +30,12 @@
         <h1 class='title is-1' id='my-number'>###</h1>
         <div class='columns is-centered'>
           <div class='column is-half'>
-            <div class='field has-addons'>
-              <div class='control is-expanded'>
-                <input class='input' id='email' type='text' placeholder='Email me my number'>
+            <div class='field'>
+              <div class='control'>
+                <textarea class='textarea' placeholder='Enter recipient emails (one on each line)' id='emails' rows='10'></textarea>
               </div>
+            </div>
+            <div class='field'>
               <div class='control'>
                 <button class='button is-primary' id='create-number-btn'>Create Number</button>
               </div>
@@ -48,13 +50,13 @@
     (function(analytics){
       var numberHtml = document.getElementById('my-number');
       var genNumberBtn = document.getElementById('create-number-btn');
-      var emailInput = document.getElementById('email');
+      var emailInput = document.getElementById('emails');
 
-      function sendEmail(to_email, number) {
-        fetch('https://1sc3p8ztsa.execute-api.us-east-2.amazonaws.com/Prod/send-number-email/', {
+      function sendEmail(to_emails, number) {
+        fetch('https://a57vx5941k.execute-api.us-east-2.amazonaws.com/Prod/send-number-email/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({to_email, number})
+          body: JSON.stringify({to_emails, number})
         })
         .then(response => {
           console.log('response', response.json())
